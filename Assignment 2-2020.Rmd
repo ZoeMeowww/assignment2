@@ -1,7 +1,7 @@
 ---
 title: "Assignment 2"
-author: "Charles Lang"
-date: "September 24, 2020"
+author: "Zoe Wang"
+date: "October 5, 2020"
 output: html_document
 ---
 #Part I
@@ -14,7 +14,7 @@ year = year student watched video
 participation = whether or not the student opened the video
 watch.time = how long the student watched the video for
 confusion.points = how many times a student rewatched a section of a video
-key,points = how many times a student skipped or increased the speed of a video
+key.points = how many times a student skipped or increased the speed of a video
 
 ```{r}
 #Install the 'tidyverse' package or if that does not work, install the 'dplyr' and 'tidyr' packages.
@@ -79,6 +79,7 @@ D4 <- filter(D1, stid == 4|stid == 20| stid == 22)
 D4 <- droplevels(D4)
 boxplot(D4$watch.time~D4$stid, xlab = "Student", ylab = "Watch Time")
 ```
+
 ## Pairs
 ```{r}
 #Use matrix notation to select columns 2, 5, 6, and 7
@@ -86,13 +87,19 @@ D5 <- D1[,c(2,5,6,7)]
 #Draw a matrix of plots for every combination of variables
 pairs(D5)
 ```
+
 ## Part II
 
 1. Create a simulated data set containing 100 students, each with a score from 1-100 representing performance in an educational game. The scores should tend to cluster around 75. Also, each student should be given a classification that reflects one of four interest groups: sport, music, nature, literature.
 
 ```{r}
 #rnorm(100, 75, 15) creates a random sample with a mean of 75 and standard deviation of 20
+
+rnorm(100, 75, 15)
+
 #filter() can be used to set a maximum and minimum value
+
+
 #round() rounds numbers to whole number values
 #sample() draws a random samples from the groups vector according to a uniform distribution
 
