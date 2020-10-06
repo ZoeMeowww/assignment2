@@ -95,12 +95,19 @@ pairs(D5)
 ```{r}
 #rnorm(100, 75, 15) creates a random sample with a mean of 75 and standard deviation of 20
 
-rnorm(100, 75, 15)
+library(dplyr)
+score = rnorm(100, 75, 15)
 
 #filter() can be used to set a maximum and minimum value
 
+S1 = data.frame(score)
+S1 <- filter(S1, score <=100)
+S2 = data.frame(rep(100, 100-nrow(S1)))
 
 #round() rounds numbers to whole number values
+
+
+
 #sample() draws a random samples from the groups vector according to a uniform distribution
 
 
