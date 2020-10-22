@@ -221,31 +221,16 @@ The variables are:
 `skipped` - whether the student skipped the question  
 `datetime` - the date and time the student attempted the question  
 `hash` - anonymyzed student ID  
+
 2. Create a data frame from the `swirl-data.csv` file called `DF1`
+
 3. Create a new data frame that only includes the variables `hash`, `lesson_name` and `attempt` called `DF2`
+
 4. Use the `group_by` function to create a data frame that sums all the attempts for each `hash` by each `lesson_name` called `DF3`
-
-```{r}
-
-DF1 <- read.csv("swirl-data.csv")
-
-DF2 <- data.frame(DF1$hash, DF1$lesson_name, DF1$attempt)
-  
-DF3 <- group_by(DF2, DF2$hash) %>% group_by(DF2, DF2$lesson_name) 
-
-summ <- sum(DF1$lesson_name.attempt)
-
-#DF3
-
-```
-
-
-
-
 
 5. On a scrap piece of paper draw what you think `DF3` would look like if all the lesson names were column names
 
-6. Convert `DF3` to this format  
+6. Convert `DF3` to this format
 
 7. Create a new data frame from `DF1` called `DF4` that only includes the variables `hash`, `lesson_name` and `correct`
 
@@ -254,5 +239,36 @@ summ <- sum(DF1$lesson_name.attempt)
 9. Create a new data frame called `DF5` that provides a mean score for each student on each course
 
 10. **Extra credit** Convert the `datetime` variable into month-day-year format and create a new data frame (`DF6`) that shows the average correct for each day
+
+```{r}
+
+library(dplyr)
+library(tidyr)
+
+DF1 <- read.csv("swirl-data.csv", header = TRUE)
+
+DF2 <- select(DF1, hash, lesson_name, attempt)
+
+#? DF2 <- data.frame(DF1$hash, DF1$lesson_name, DF1$attempt)
+  
+DF3 <- DF2 %>% group_by(hash, lesson_name) %>% summarise(attempt = sum(attempt))
+
+DF3 <- na.omit(DF3)
+DF3b <- spread(DF3, lesson_name, attempt)
+
+DF4 <- select(DF1, hash, lesson_name, correct)
+
+DF4$correct <- ifelse(DF4$correct == TRUE, 1, ifelse(is.na(DF4$correct) == TRUE, NA, 0))
+
+DF5 <- DF4 %>% group_by(hash, lesson_name) %>% summarise(mean.correct = mean(correct, na.rm = TRUE))
+
+DF6 <- select(DF1, correct, datetime)
+
+DF6$correct <- ifelse(DF6$correct == TRUE, 1, 0)
+DF6$datetime <- as.POSIXct(DF6$datetime, origin = "1970-01-01 00.00.00 UTC")
+DF6$datetime <- strftime(DF6$datetime, format="%b:%e")
+
+```
+
 
 Finally use the knitr function to generate an html document from your work. Commit, Push and Pull Request your work back to the main branch of the repository. Make sure you include both the .Rmd file and the .html file. 
